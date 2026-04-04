@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI 답변 정리기
 
-## Getting Started
+AI 출력물을 붙여넣으면 citation, 링크 꼬리, 마크다운 잔재, 불필요한 줄바꿈을 자동 정리해 plain text로 바꿔주는 개인용 MVP입니다.
 
-First, run the development server:
+## 범위
+
+- 포함: 붙여넣기, 즉시 정규화, 복사, TXT 다운로드, 초기화
+- 제외: 로그인, 저장, 히스토리, 데이터베이스, 서버 API, 옵션 패널
+- 처리 방식: 브라우저 내부에서만 정규화하며 서버에 입력 텍스트를 저장하지 않습니다
+
+## 스택
+
+- Next.js 16
+- TypeScript
+- Tailwind CSS v4
+- shadcn/ui
+- Vitest + Testing Library
+
+## 로컬 실행
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+브라우저에서 [http://localhost:3000](http://localhost:3000) 을 엽니다.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 검증
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run lint
+npm run test
+npm run build
+```
 
-## Learn More
+## 정규화 규칙
 
-To learn more about Next.js, take a look at the following resources:
+현재 정규화 파이프라인은 아래 순서로 동작합니다.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. 입력 공백과 줄바꿈 정리
+2. citation marker 제거
+3. markdown 장식 제거
+4. UI 잔재 제거
+5. 문단 줄바꿈 복원
+6. 리스트 표기 통일
+7. trailing links 제거
+8. 최종 whitespace 정리
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+지원 품질 최적화 대상은 한국어와 영어입니다.
