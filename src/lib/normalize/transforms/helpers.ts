@@ -9,11 +9,11 @@ export function countMatches(text: string, pattern: RegExp) {
 }
 
 export function isListLine(line: string) {
-  return /^(\s*)([-*•▪◦]|\d+\.)\s+/.test(line);
+  return /^(\s*)([-*•▪◦]|\d+[.)])\s+/.test(line);
 }
 
 export function isOrderedListLine(line: string) {
-  return /^(\s*)\d+\.\s+/.test(line);
+  return /^(\s*)\d+[.)]\s+/.test(line);
 }
 
 export function isCodeFence(line: string) {
@@ -58,7 +58,9 @@ export function isUrlOnlyLine(line: string) {
 }
 
 export function isSourceHeading(line: string) {
-  return /^(sources?|references?|further reading|related links?)\s*:?\s*$/i.test(line.trim());
+  return /^(sources?|references?|further reading|related links?|출처|참고|참고 링크|관련 링크)\s*:?\s*$/i.test(
+    line.trim(),
+  );
 }
 
 export function joinWithSpace(left: string, right: string) {

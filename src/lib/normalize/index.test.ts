@@ -22,3 +22,13 @@ https://example.org`);
     expect(result.stats.collapsedLines).toBeGreaterThan(0);
   });
 });
+
+describe("normalizeText source detection", () => {
+  it("detects gemini markers", () => {
+    expect(normalizeText("[cite_start] Gemini text [cite_end]").detectedSource).toBe("gemini");
+  });
+
+  it("detects perplexity style brackets", () => {
+    expect(normalizeText("Perplexity answer [1][2]").detectedSource).toBe("perplexity");
+  });
+});

@@ -9,8 +9,10 @@ function isCitationLikeLine(line: string) {
 
   return (
     isUrlOnlyLine(trimmed) ||
+    /^(?:\d+[.)]\s*)(?:https?:\/\/|www\.)\S+$/i.test(trimmed) ||
     /^(?:[-*]\s*)?\[[^\]]+\]\(https?:\/\/[^\s)]+\)$/i.test(trimmed) ||
-    /^(?:[-*]\s*)?[A-Za-z0-9 _-]+:\s*https?:\/\/\S+$/i.test(trimmed)
+    /^(?:[-*]|\d+[.)])\s*[A-Za-z0-9 _-]+:\s*https?:\/\/\S+$/i.test(trimmed) ||
+    /^[A-Za-z0-9 _-]+:\s*https?:\/\/\S+$/i.test(trimmed)
   );
 }
 

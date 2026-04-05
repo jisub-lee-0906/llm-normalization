@@ -6,6 +6,9 @@ const citationPatterns = [
   /\[cite_end\]/g,
   /\[cite:\s*[\d,\s]+\]/g,
   /\[\^\d+\]/g,
+  /【\d+[:†][^】]*】/g,
+  /\[(?:\d{1,3}|source|sources)\](?=\[(?:\d{1,3}|source|sources)\])/gi,
+  /(?<=\S)(?:\[(?:\d{1,3})\]){2,}/g,
   /(?<=\S)\s*\[(?:\d{1,3}|source|sources)\](?=[\s,.;:!?)]|$)/gi,
 ];
 

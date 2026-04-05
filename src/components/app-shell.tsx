@@ -10,8 +10,15 @@ import { Separator } from "@/components/ui/separator";
 import {
   EMPTY_NORMALIZE_RESULT,
   type NormalizeResult,
+  type NormalizeStats,
   normalizeText,
 } from "@/lib/normalize";
+import { buildDiffSegments } from "@/lib/normalize/diff";
+import {
+  getDesktopRuntimeInfo,
+  runDesktopCleanup,
+  type DesktopRuntimeInfo,
+} from "@/lib/desktop/runtime";
 import { copyToClipboard } from "@/lib/utils/clipboard";
 import { downloadTextFile } from "@/lib/utils/download";
 
@@ -24,40 +31,74 @@ const ERROR_STATUS =
 export function AppShell() {
   const [input, setInput] = useState("");
   const [result, setResult] = useState<NormalizeResult>(EMPTY_NORMALIZE_RESULT);
+  const [enhancedOutput, setEnhancedOutput] = useState<string | null>(null);
+  const [isEnhancing, setIsEnhancing] = useState(false);
   const [statusMessage, setStatusMessage] = useState(DEFAULT_STATUS);
+  const [runtimeInfo, setRuntimeInfo] = useState<DesktopRuntimeInfo | null>(null);
 
   const deferredInput = useDeferredValue(input);
+  const displayedOutput = enhancedOutput ?? result.output;
+  const diffSegments = buildDiffSegments(input, displayedOutput);
 
   useEffect(() => {
     startTransition(() => {
       const nextResult = normalizeText(deferredInput);
       setResult(nextResult);
+      setEnhancedOutput(null);
+      setIsEnhancing(false);
       setStatusMessage(nextResult.warnings.includes("fallback_to_input") ? ERROR_STATUS : DEFAULT_STATUS);
     });
   }, [deferredInput]);
 
+  useEffect(() => {
+    void getDesktopRuntimeInfo().then(setRuntimeInfo);
+  }, []);
+
   async function handleCopy() {
-    if (!result.output) {
+    if (!displayedOutput) {
       return;
     }
 
-    const ok = await copyToClipboard(result.output);
+    const ok = await copyToClipboard(displayedOutput);
     setStatusMessage(ok ? COPY_SUCCESS : "복사에 실패했습니다. 브라우저 권한을 확인해 주세요.");
   }
 
   function handleDownload() {
-    if (!result.output) {
+    if (!displayedOutput) {
       return;
     }
 
-    downloadTextFile(result.output, "normalized-output.txt");
+    downloadTextFile(displayedOutput, "normalized-output.txt");
     setStatusMessage(DOWNLOAD_SUCCESS);
   }
 
   function handleReset() {
     setInput("");
     setResult(EMPTY_NORMALIZE_RESULT);
+    setEnhancedOutput(null);
+    setIsEnhancing(false);
     setStatusMessage(DEFAULT_STATUS);
+  }
+
+  async function handleEnhance() {
+    if (!runtimeInfo?.llmAvailable || !result.output || isEnhancing) {
+      return;
+    }
+
+    setIsEnhancing(true);
+    setStatusMessage("로컬 모델로 본문만 다시 정리하고 있습니다.");
+
+    const cleanup = await runDesktopCleanup(result.output);
+
+    if (!cleanup?.output) {
+      setStatusMessage("로컬 본문 추출에 실패해 기본 정규화 결과를 유지했습니다.");
+      setIsEnhancing(false);
+      return;
+    }
+
+    setEnhancedOutput(cleanup.output);
+    setIsEnhancing(false);
+    setStatusMessage(`로컬 모델 후처리를 적용했습니다. ${cleanup.durationMs}ms · ${cleanup.backend}`);
   }
 
   return (
@@ -108,18 +149,23 @@ export function AppShell() {
               />
               <TextPanel
                 description="정규화 결과는 실시간으로 갱신됩니다."
+                diffSegments={diffSegments}
+                metaLabel={`Source · ${result.detectedSource}`}
                 readOnly
                 title="정리된 텍스트"
-                value={result.output}
+                value={displayedOutput}
               />
             </div>
 
             <div className="flex flex-col gap-5 rounded-[1.5rem] border border-border bg-card p-4 sm:p-5 lg:flex-row lg:items-center lg:justify-between">
               <ActionBar
-                canCopy={Boolean(result.output)}
-                canDownload={Boolean(result.output)}
+                canCopy={Boolean(displayedOutput)}
+                canDownload={Boolean(displayedOutput)}
+                canEnhance={Boolean(runtimeInfo?.llmAvailable && result.output)}
+                isEnhancing={isEnhancing}
                 onCopy={handleCopy}
                 onDownload={handleDownload}
+                onEnhance={runtimeInfo?.mode === "desktop" ? handleEnhance : undefined}
                 onReset={handleReset}
               />
 
@@ -134,6 +180,14 @@ export function AppShell() {
               <p className="text-sm leading-6 text-muted-foreground">
                 {statusMessage}
               </p>
+              {runtimeInfo ? (
+                <p className="text-sm leading-6 text-muted-foreground">
+                  실행 모드: {runtimeInfo.mode === "desktop" ? "데스크톱" : "웹"}
+                  {runtimeInfo.mode === "desktop"
+                    ? ` · 모델 ${runtimeInfo.llmAvailable ? "후처리 가능" : runtimeInfo.modelExists ? "모델만 있음" : "없음"}`
+                    : ""}
+                </p>
+              ) : null}
               {result.warnings.length > 0 ? (
                 <p className="flex items-start gap-2 text-sm leading-6 text-muted-foreground">
                   <AlertCircle className="mt-0.5 size-4 shrink-0 text-foreground" />
@@ -148,7 +202,7 @@ export function AppShell() {
   );
 }
 
-function StatTile({ label, value }: { label: string; value: number }) {
+function StatTile({ label, value }: { label: string; value: NormalizeStats[keyof NormalizeStats] }) {
   return (
     <div className="min-w-28 rounded-[1.1rem] border border-border bg-background px-4 py-3">
       <p className="text-[11px] font-medium tracking-[0.14em] uppercase text-muted-foreground">{label}</p>

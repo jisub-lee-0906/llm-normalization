@@ -25,12 +25,49 @@ npm run dev
 
 브라우저에서 [http://localhost:3000](http://localhost:3000) 을 엽니다.
 
+## 데스크톱 전환 상태
+
+- Tauri 셸이 `src-tauri/`에 추가되어 있습니다.
+- 로컬 모델 기본 경로는 `models/qwen2.5-1.5b-instruct-q4_k_m.gguf` 입니다.
+- 모델 다운로드:
+
+```bash
+powershell -ExecutionPolicy Bypass -File .\scripts\download-model.ps1
+```
+
+- 데스크톱 개발/빌드 스크립트:
+
+```bash
+npm run desktop:dev
+npm run desktop:build
+npm run portable:build
+```
+
+- Windows에서 실제 Tauri 빌드를 하려면 Rust와 MSVC C++ 빌드 도구가 필요합니다.
+- 포터블 배포물은 `dist/portable/AI-답변-정리기-portable/`에 생성되며, zip은 `dist/portable/AI-답변-정리기-portable.zip`에 생성됩니다.
+
 ## 검증
 
 ```bash
 npm run lint
 npm run test
 npm run build
+npm run quality:report
+```
+
+`npm run quality:report` 는 fixture 기준 통과율을 source별, 패턴별로 요약하고 `output/quality/quality-report.md`에 리포트를 저장합니다.
+
+## 배포
+
+- 정적 자산과 메타는 앱 라우터 기준으로 구성되어 있습니다.
+- 포함 항목: `icon.svg`, `apple-icon.svg`, `opengraph-image`, `manifest`, `robots`
+- 일반적인 Next.js 배포 환경에서 바로 동작합니다.
+
+권장 배포:
+
+```bash
+npm run build
+npm run start
 ```
 
 ## 정규화 규칙

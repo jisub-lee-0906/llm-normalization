@@ -19,6 +19,8 @@ export function stripMarkdownArtifacts(text: string): TransformResult {
 
   replaceAndCount(/^#{1,6}\s+/gm, "§§H§§ ");
   replaceAndCount(/^>\s?/gm, "§§H§§ ");
+  replaceAndCount(/!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g, (_match, altText) => altText || "");
+  replaceAndCount(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (_match, label) => label);
   replaceAndCount(/(\*\*|__)(.*?)\1/g, (_match, _marker, innerText) => innerText);
   replaceAndCount(/(?<!\*)\*([^*\n]+)\*(?!\*)/g, (_match, innerText) => innerText);
   replaceAndCount(/(?<!_)_([^_\n]+)_(?!_)/g, (_match, innerText) => innerText);

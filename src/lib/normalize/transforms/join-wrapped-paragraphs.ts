@@ -27,6 +27,12 @@ export function joinWrappedParagraphs(text: string): TransformResult {
         return rawLines.join("\n");
       }
 
+      if (rawLines[0] === "§§CODE§§") {
+        return rawLines
+          .filter((line) => line !== "§§CODE§§" && line !== "§§ENDCODE§§")
+          .join("\n");
+      }
+
       if (rawLines.length > 1 && rawLines.every(isTableLine)) {
         return rawLines.join("\n");
       }

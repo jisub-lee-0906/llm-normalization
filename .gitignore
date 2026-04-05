@@ -13,7 +13,13 @@
 # testing
 /coverage
 /.playwright-cli/
-/output/playwright/
+/output/
+/dist/
+/src-tauri/target/
+/models/*.gguf
+/bin/*.exe
+/bin/llama.cpp/runtime/
+/bin/llama.cpp/*.zip
 
 # next.js
 /.next/

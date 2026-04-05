@@ -1,11 +1,21 @@
+import { detectSource } from "@/lib/normalize/detect-source";
 import { normalizationFixtures } from "@/lib/normalize/fixtures";
+import { extractMainContent } from "@/lib/normalize/transforms/extract-main-content";
 import { joinWrappedParagraphs } from "@/lib/normalize/transforms/join-wrapped-paragraphs";
+import { languageAwareSpacing } from "@/lib/normalize/transforms/language-aware-spacing";
+import { normalizeCodeBlocks } from "@/lib/normalize/transforms/normalize-code-blocks";
 import { normalizeLists } from "@/lib/normalize/transforms/normalize-lists";
 import { normalizeWhitespace } from "@/lib/normalize/transforms/normalize-whitespace";
 import { pruneTrailingLinks } from "@/lib/normalize/transforms/prune-trailing-links";
+import { stripAiFiller } from "@/lib/normalize/transforms/strip-ai-filler";
+import { stripConversationalTone } from "@/lib/normalize/transforms/strip-conversational-tone";
 import { removeUiNoise } from "@/lib/normalize/transforms/remove-ui-noise";
 import { stripCitations } from "@/lib/normalize/transforms/strip-citations";
+import { stripEmojis } from "@/lib/normalize/transforms/strip-emojis";
+import { stripInternalMarkers } from "@/lib/normalize/transforms/strip-internal-markers";
 import { stripMarkdownArtifacts } from "@/lib/normalize/transforms/strip-markdown-artifacts";
+import { stripMetaSentences } from "@/lib/normalize/transforms/strip-meta-sentences";
+import { vendorCleanup } from "@/lib/normalize/transforms/vendor-cleanup";
 import type { NormalizeResult, NormalizeStats, TransformResult } from "@/lib/normalize/types";
 
 export { normalizationFixtures };
@@ -22,16 +32,25 @@ export const EMPTY_NORMALIZE_RESULT: NormalizeResult = {
     normalizedLists: 0,
   },
   warnings: [],
+  detectedSource: "generic",
 };
 
 const pipeline = [
   normalizeWhitespace,
   stripCitations,
   removeUiNoise,
+  stripAiFiller,
+  stripConversationalTone,
+  stripEmojis,
   pruneTrailingLinks,
+  normalizeCodeBlocks,
   stripMarkdownArtifacts,
   joinWrappedParagraphs,
+  stripMetaSentences,
   normalizeLists,
+  extractMainContent,
+  languageAwareSpacing,
+  stripInternalMarkers,
   normalizeWhitespace,
 ];
 
@@ -42,8 +61,13 @@ export function normalizeText(input: string): NormalizeResult {
 
   try {
     let text = input;
+    const detectedSource = detectSource(input);
     const stats = { ...EMPTY_NORMALIZE_RESULT.stats };
     const warnings = new Set<NormalizeResult["warnings"][number]>();
+
+    const vendorResult = vendorCleanup(text, { source: detectedSource });
+    text = vendorResult.text;
+    mergeTransformResult(stats, warnings, vendorResult);
 
     for (const transform of pipeline) {
       const result = transform(text);
@@ -55,12 +79,14 @@ export function normalizeText(input: string): NormalizeResult {
       output: text.trim(),
       stats,
       warnings: Array.from(warnings),
+      detectedSource,
     };
   } catch {
     return {
       output: input.trim(),
       stats: { ...EMPTY_NORMALIZE_RESULT.stats },
       warnings: ["fallback_to_input"],
+      detectedSource: "generic",
     };
   }
 }

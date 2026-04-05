@@ -22,7 +22,7 @@ export function normalizeLists(text: string): TransformResult {
     .split("\n")
     .map((line) => {
       if (isOrderedListLine(line)) {
-        return line.replace(/^(\s*)(\d+)\.\s+/, "$1$2. ");
+        return line.replace(/^(\s*)(\d+)[.)]\s+/, "$1$2. ");
       }
 
       return line;

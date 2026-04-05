@@ -4,8 +4,10 @@ const UI_NOISE_LINES = new Set([
   "copy",
   "copied",
   "copy code",
+  "copy text",
   "share",
   "regenerate",
+  "regenerate response",
   "retry",
   "edit prompt",
   "ask follow-up",
@@ -14,6 +16,8 @@ const UI_NOISE_LINES = new Set([
   "read more",
   "view more",
   "view all sources",
+  "good response",
+  "bad response",
 ]);
 
 export function removeUiNoise(text: string): TransformResult {

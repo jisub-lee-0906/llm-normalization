@@ -10,6 +10,18 @@ vi.mock("@/lib/utils/clipboard", () => ({
   copyToClipboard: copyToClipboardMock,
 }));
 
+vi.mock("@/lib/desktop/runtime", () => ({
+  getDesktopRuntimeInfo: vi.fn().mockResolvedValue({
+    mode: "web",
+    modelPath: null,
+    modelExists: false,
+    resourceDir: null,
+    llamaCliPath: null,
+    llmAvailable: false,
+  }),
+  runDesktopCleanup: vi.fn().mockResolvedValue(null),
+}));
+
 import { AppShell } from "@/components/app-shell";
 
 describe("AppShell", () => {
@@ -34,6 +46,7 @@ describe("AppShell", () => {
       expect(screen.getByPlaceholderText(/정리 결과가 여기에 표시됩니다./i)).toHaveValue(
         "Heading\n\nbold text",
       );
+      expect(screen.getByText(/Removed from source/i)).toBeInTheDocument();
     });
   });
 
