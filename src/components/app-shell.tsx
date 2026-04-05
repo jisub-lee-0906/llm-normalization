@@ -73,13 +73,8 @@ export function AppShell() {
                     Markdown To TXT
                   </p>
                   <h1 className="font-heading text-4xl leading-tight font-semibold tracking-[-0.04em] text-foreground sm:text-5xl">
-                    마크다운과 복붙 텍스트를
-                    <br />
-                    보기 좋은 TXT로 정리합니다.
+                    텍스트 정리
                   </h1>
-                <p className="text-sm leading-6 text-muted-foreground sm:text-base">
-                  붙여넣으면 바로 plain text로 정리됩니다.
-                </p>
               </div>
             </header>
 
