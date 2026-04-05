@@ -1,6 +1,6 @@
-# AI 답변 정리기
+# Markdown To TXT
 
-AI 출력물을 붙여넣으면 citation, 링크 꼬리, 마크다운 잔재, 불필요한 줄바꿈을 자동 정리해 plain text로 바꿔주는 개인용 MVP입니다.
+마크다운이나 웹에서 복사한 텍스트를 붙여넣으면 citation, 링크 꼬리, 마크다운 잔재, 불필요한 줄바꿈을 자동 정리해 보기 좋은 plain text로 바꿔주는 개인용 MVP입니다.
 
 ## 범위
 
@@ -24,27 +24,6 @@ npm run dev
 ```
 
 브라우저에서 [http://localhost:3000](http://localhost:3000) 을 엽니다.
-
-## 데스크톱 전환 상태
-
-- Tauri 셸이 `src-tauri/`에 추가되어 있습니다.
-- 로컬 모델 기본 경로는 `models/qwen2.5-1.5b-instruct-q4_k_m.gguf` 입니다.
-- 모델 다운로드:
-
-```bash
-powershell -ExecutionPolicy Bypass -File .\scripts\download-model.ps1
-```
-
-- 데스크톱 개발/빌드 스크립트:
-
-```bash
-npm run desktop:dev
-npm run desktop:build
-npm run portable:build
-```
-
-- Windows에서 실제 Tauri 빌드를 하려면 Rust와 MSVC C++ 빌드 도구가 필요합니다.
-- 포터블 배포물은 `dist/portable/AI-답변-정리기-portable/`에 생성되며, zip은 `dist/portable/AI-답변-정리기-portable.zip`에 생성됩니다.
 
 ## 검증
 
@@ -70,7 +49,7 @@ npm run build
 npm run start
 ```
 
-## 정규화 규칙
+## 정규화 범위
 
 현재 정규화 파이프라인은 아래 순서로 동작합니다.
 

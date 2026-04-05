@@ -6,7 +6,6 @@ import { Textarea } from "@/components/ui/textarea";
 
 type TextPanelProps = {
   title: string;
-  description: string;
   value: string;
   onChange?: (value: string) => void;
   readOnly?: boolean;
@@ -16,7 +15,6 @@ type TextPanelProps = {
 
 export function TextPanel({
   title,
-  description,
   value,
   onChange,
   readOnly = false,
@@ -25,7 +23,7 @@ export function TextPanel({
 }: TextPanelProps) {
   return (
     <Card className="overflow-hidden rounded-[1.5rem] border-border bg-card shadow-none">
-      <CardHeader className="gap-2">
+      <CardHeader className="gap-0">
         <div className="flex items-center justify-between gap-3">
           <CardTitle className="text-base font-semibold text-foreground">{title}</CardTitle>
           {metaLabel ? (
@@ -34,7 +32,6 @@ export function TextPanel({
             </span>
           ) : null}
         </div>
-        <p className="text-sm leading-6 text-muted-foreground">{description}</p>
       </CardHeader>
       <CardContent>
         <Textarea
@@ -43,7 +40,7 @@ export function TextPanel({
           placeholder={
             readOnly
               ? "정리 결과가 여기에 표시됩니다."
-              : "여기에 AI 응답을 붙여넣으세요. 예: ChatGPT, Gemini, Perplexity, Claude"
+              : "여기에 붙여넣으세요."
           }
           readOnly={readOnly}
           value={value}

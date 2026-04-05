@@ -16,18 +16,17 @@ const plexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"),
   title: {
-    default: "AI 답변 정리기",
-    template: "%s | AI 답변 정리기",
+    default: "Markdown To TXT",
+    template: "%s | Markdown To TXT",
   },
   description:
-    "ChatGPT, Gemini, Perplexity, Claude에서 복사한 텍스트를 붙여넣으면 citation, 링크 꼬리, 마크다운 잔재를 정리해 바로 쓸 수 있는 plain text로 바꿉니다.",
-  applicationName: "AI 답변 정리기",
+    "마크다운이나 웹에서 복사한 텍스트를 붙여넣으면 citation, 링크 꼬리, 마크다운 잔재를 정리해 바로 쓸 수 있는 plain text로 바꿉니다.",
+  applicationName: "Markdown To TXT",
   keywords: [
-    "AI text cleaner",
-    "LLM normalization",
-    "ChatGPT copy paste cleanup",
-    "Gemini cleanup",
-    "Perplexity cleanup",
+    "markdown to txt",
+    "plain text formatter",
+    "copy paste cleanup",
+    "markdown cleaner",
     "plain text formatter",
   ],
   category: "productivity",
@@ -37,9 +36,9 @@ export const metadata: Metadata = {
     apple: "/apple-icon.svg",
   },
   openGraph: {
-    title: "AI 답변 정리기",
+    title: "Markdown To TXT",
     description:
-      "AI 출력물을 붙여넣으면 citation, 링크 꼬리, 마크다운 잔재를 자동으로 정리해 plain text로 바꿉니다.",
+      "마크다운과 복붙 텍스트를 붙여넣으면 citation, 링크 꼬리, 마크다운 잔재를 자동으로 정리해 plain text로 바꿉니다.",
     type: "website",
     locale: "ko_KR",
     images: [
@@ -47,15 +46,15 @@ export const metadata: Metadata = {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "AI 답변 정리기",
+        alt: "Markdown To TXT",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "AI 답변 정리기",
+    title: "Markdown To TXT",
     description:
-      "AI 출력물을 붙여넣으면 citation, 링크 꼬리, 마크다운 잔재를 자동으로 정리해 plain text로 바꿉니다.",
+      "마크다운과 복붙 텍스트를 붙여넣으면 citation, 링크 꼬리, 마크다운 잔재를 자동으로 정리해 plain text로 바꿉니다.",
     images: ["/opengraph-image"],
   },
 };

@@ -10,18 +10,6 @@ vi.mock("@/lib/utils/clipboard", () => ({
   copyToClipboard: copyToClipboardMock,
 }));
 
-vi.mock("@/lib/desktop/runtime", () => ({
-  getDesktopRuntimeInfo: vi.fn().mockResolvedValue({
-    mode: "web",
-    modelPath: null,
-    modelExists: false,
-    resourceDir: null,
-    llamaCliPath: null,
-    llmAvailable: false,
-  }),
-  runDesktopCleanup: vi.fn().mockResolvedValue(null),
-}));
-
 import { AppShell } from "@/components/app-shell";
 
 describe("AppShell", () => {
@@ -38,7 +26,7 @@ describe("AppShell", () => {
     render(<AppShell />);
 
     await user.type(
-      screen.getByPlaceholderText(/여기에 ai 응답을 붙여넣으세요/i),
+      screen.getByPlaceholderText(/여기에 붙여넣으세요/i),
       "## Heading\n\n**bold** text[1]",
     );
 
@@ -55,7 +43,7 @@ describe("AppShell", () => {
 
     render(<AppShell />);
 
-    await user.type(screen.getByPlaceholderText(/여기에 ai 응답을 붙여넣으세요/i), "Text[1]");
+    await user.type(screen.getByPlaceholderText(/여기에 붙여넣으세요/i), "Text[1]");
     const copyButton = await screen.findByRole("button", { name: "복사" });
 
     await waitFor(() => {

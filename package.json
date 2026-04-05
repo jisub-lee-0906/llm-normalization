@@ -6,9 +6,6 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "desktop:dev": "tauri dev",
-    "desktop:build": "tauri build",
-    "portable:build": "powershell -ExecutionPolicy Bypass -File .\\scripts\\build-portable.ps1",
     "lint": "eslint",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -28,7 +25,6 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
-    "@tauri-apps/cli": "^2.10.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",

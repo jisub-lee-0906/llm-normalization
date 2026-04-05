@@ -1,44 +1,26 @@
 "use client";
 
-import { Copy, Download, Sparkles, RotateCcw } from "lucide-react";
+import { Copy, Download, RotateCcw } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
 type ActionBarProps = {
   canCopy: boolean;
   canDownload: boolean;
-  canEnhance?: boolean;
-  isEnhancing?: boolean;
   onCopy: () => void;
   onDownload: () => void;
-  onEnhance?: () => void;
   onReset: () => void;
 };
 
 export function ActionBar({
   canCopy,
   canDownload,
-  canEnhance = false,
-  isEnhancing = false,
   onCopy,
   onDownload,
-  onEnhance,
   onReset,
 }: ActionBarProps) {
   return (
     <div className="flex flex-wrap gap-3">
-      {onEnhance ? (
-        <Button
-          className="h-10 rounded-xl border-border bg-background px-4 text-foreground hover:bg-muted"
-          disabled={!canEnhance || isEnhancing}
-          onClick={onEnhance}
-          type="button"
-          variant="outline"
-        >
-          <Sparkles className="size-4" />
-          {isEnhancing ? "본문 추출 중..." : "본문 추출 강화"}
-        </Button>
-      ) : null}
       <Button
         className="h-10 rounded-xl bg-foreground px-4 text-background hover:opacity-90"
         disabled={!canCopy}
