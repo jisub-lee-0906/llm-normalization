@@ -64,16 +64,11 @@ function DiffPreview({ segments }: { segments: DiffSegment[] }) {
   );
 
   return (
-    <div className="mt-4 rounded-[1.25rem] border border-border bg-muted/30 px-4 py-3">
-      <div className="mb-3 flex items-center justify-between gap-3">
-        <p className="text-[11px] font-medium tracking-[0.14em] text-muted-foreground uppercase">
-          Removed from source
-        </p>
-        <p className="rounded-full border border-border bg-background px-2 py-1 text-[11px] font-medium text-muted-foreground">
-          {removedTokenCount} tokens
-        </p>
-      </div>
-      <div className="flex flex-wrap gap-2">
+    <details className="mt-4 rounded-[1.25rem] border border-border bg-muted/20 px-4 py-3">
+      <summary className="cursor-pointer list-none text-[11px] font-medium tracking-[0.14em] text-muted-foreground uppercase">
+        Removed {removedTokenCount}
+      </summary>
+      <div className="mt-3 flex flex-wrap gap-2">
         {removedSegments.map((segment, index) => (
           <span
             className="rounded-md border border-border bg-background px-2 py-1 text-sm leading-6 text-foreground"
@@ -83,6 +78,6 @@ function DiffPreview({ segments }: { segments: DiffSegment[] }) {
           </span>
         ))}
       </div>
-    </div>
+    </details>
   );
 }

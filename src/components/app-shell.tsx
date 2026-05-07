@@ -9,7 +9,6 @@ import { Separator } from "@/components/ui/separator";
 import {
   EMPTY_NORMALIZE_RESULT,
   type NormalizeResult,
-  type NormalizeStats,
   normalizeText,
 } from "@/lib/normalize";
 import { buildDiffSegments } from "@/lib/normalize/diff";
@@ -88,14 +87,13 @@ export function AppShell() {
               />
               <TextPanel
                 diffSegments={diffSegments}
-                metaLabel={`Source · ${result.detectedSource}`}
                 readOnly
                 title="정리된 텍스트"
                 value={result.output}
               />
             </div>
 
-            <div className="flex flex-col gap-5 rounded-[1.5rem] border border-border bg-card p-4 sm:p-5 lg:flex-row lg:items-center lg:justify-between">
+            <div className="rounded-[1.5rem] border border-border bg-card p-4 sm:p-5">
               <ActionBar
                 canCopy={Boolean(result.output)}
                 canDownload={Boolean(result.output)}
@@ -103,20 +101,14 @@ export function AppShell() {
                 onDownload={handleDownload}
                 onReset={handleReset}
               />
-
-              <div className="grid gap-3 sm:grid-cols-3">
-                <StatTile label="Citations" value={result.stats.removedCitations} />
-                <StatTile label="Links" value={result.stats.removedLinks} />
-                <StatTile label="Lines" value={result.stats.collapsedLines} />
-              </div>
             </div>
 
-            <div className="flex flex-col gap-2 rounded-[1.5rem] border border-border bg-card p-4">
-              <p className="text-sm text-muted-foreground">{statusMessage}</p>
+            <div className="flex min-h-5 items-start justify-between gap-4">
+              <p className="text-xs text-muted-foreground">{statusMessage}</p>
               {result.warnings.length > 0 ? (
-                <p className="flex items-start gap-2 text-sm text-muted-foreground">
-                  <AlertCircle className="mt-0.5 size-4 shrink-0 text-foreground" />
-                  경고: {result.warnings.join(", ")}
+                <p className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <AlertCircle className="size-3.5 shrink-0 text-foreground" />
+                  {result.warnings.join(", ")}
                 </p>
               ) : null}
             </div>
@@ -124,14 +116,5 @@ export function AppShell() {
         </section>
       </div>
     </main>
-  );
-}
-
-function StatTile({ label, value }: { label: string; value: NormalizeStats[keyof NormalizeStats] }) {
-  return (
-    <div className="min-w-24 rounded-[1.1rem] border border-border bg-background px-4 py-3">
-      <p className="text-[11px] font-medium tracking-[0.14em] uppercase text-muted-foreground">{label}</p>
-      <p className="mt-2 text-2xl font-semibold text-foreground">{value}</p>
-    </div>
   );
 }

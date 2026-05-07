@@ -34,7 +34,6 @@ describe("AppShell", () => {
       expect(screen.getByPlaceholderText(/정리 결과가 여기에 표시됩니다./i)).toHaveValue(
         "Heading\n\nbold text",
       );
-      expect(screen.getByText(/Removed from source/i)).toBeInTheDocument();
     });
   });
 
