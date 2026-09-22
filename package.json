@@ -9,7 +9,7 @@
     "lint": "eslint",
     "test": "vitest run",
     "test:watch": "vitest",
-    "quality:report": "npx tsx scripts/quality-report.ts"
+    "quality:report": "tsx scripts/quality-report.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",
@@ -35,6 +35,7 @@
     "eslint-config-next": "16.2.2",
     "jsdom": "^29.0.1",
     "tailwindcss": "^4",
+    "tsx": "^4.23.15",
     "typescript": "^5",
     "vitest": "^4.1.2"
   }

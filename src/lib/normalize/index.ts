@@ -56,7 +56,12 @@ const pipeline = [
 
 export function normalizeText(input: string): NormalizeResult {
   if (!input.trim()) {
-    return EMPTY_NORMALIZE_RESULT;
+    // Callers receive their own result object, so UI state cannot mutate the shared default.
+    return {
+      ...EMPTY_NORMALIZE_RESULT,
+      stats: { ...EMPTY_NORMALIZE_RESULT.stats },
+      warnings: [],
+    };
   }
 
   try {

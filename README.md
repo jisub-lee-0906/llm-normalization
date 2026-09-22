@@ -34,7 +34,7 @@ npm run build
 npm run quality:report
 ```
 
-`npm run quality:report` 는 fixture 기준 통과율을 source별, 패턴별로 요약하고 `output/quality/quality-report.md`에 리포트를 저장합니다.
+`npm run quality:report`는 잠긴 개발 의존성의 `tsx`로 fixture 기준 통과율을 source별, 패턴별로 요약하고 `output/quality/quality-report.md`에 리포트를 저장합니다.
 
 ## 배포
 
