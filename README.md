@@ -16,10 +16,17 @@
 - shadcn/ui
 - Vitest + Testing Library
 
+## 공개 준비 상태
+
+- 상태: **개인용 MVP (로컬 검증 기준)**. 기존 로컬 검증 기록에는 lint, Vitest 83개, quality report, production build 통과가 있습니다.
+- 이 근거는 로컬 테스트·빌드 검증일 뿐입니다. 실서비스, 브라우저 E2E, 실제 배포 환경은 검증되지 않았습니다.
+
 ## 로컬 실행
 
+잠긴 의존성을 재현하려면 lockfile 기준으로 설치합니다.
+
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
@@ -63,3 +70,7 @@ npm run start
 8. 최종 whitespace 정리
 
 지원 품질 최적화 대상은 한국어와 영어입니다.
+
+## 자동 검증 현황 (2026-09-23)
+
+GitHub Actions 워크플로와 실행 기록은 없습니다. 위 로컬 테스트·빌드 기록을 원격 CI 통과로 해석하지 마세요.
